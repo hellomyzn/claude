@@ -1,0 +1,49 @@
+{
+    "permissions": {
+        "allow": [
+            "Skill(prd-writing)",
+            "Skill(functional-design)",
+            "Skill(architecture-design)",
+            "Skill(repository-structure)",
+            "Skill(development-guidelines)",
+            "Skill(glossary-creation)"
+            ],
+        "deny": [
+            "Write(credential.txt)"
+        ],
+        "ask": []
+    },
+    "hooks": {
+        "PreToolUse": [
+            {
+                "matcher": "Bash",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "jq -r '\"\\(.tool_input.command) - \\(.tool_input.description // \"No description\")\"' >> ~/.claude/bash-command-log.txt"
+                    }
+                ]
+            }
+        ],
+        "Notification": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "terminal-notifier -title 'Claude Code' -message 'Awaiting your input'"
+                    }
+                ]
+            }
+        ],
+        "Stop": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "terminal-notifier -title 'Claude Code' -message 'Task completed'"
+                    }
+                ]
+            }
+        ]
+    }
+}
